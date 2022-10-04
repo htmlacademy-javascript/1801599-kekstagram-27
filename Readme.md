@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Alina Melikhova](https://up.htmlacademy.ru/javascript/27/user/1801599).
-* Наставник: [Виктория Никитина](https://github.com/vikitina).
+* Наставник:[Виктория Никитина](https://github.com/vikitina).
 
 ---
 
