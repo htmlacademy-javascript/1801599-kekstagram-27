@@ -28,5 +28,4 @@ function getCommentLength(comment,maxLength){
 }
 getCommentLength('comment',140);
 
-export getRandomNumber;
-export getUniqueRandomNumber;
+export { getRandomNumber, getUniqueRandomNumber };
