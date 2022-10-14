@@ -1,5 +1,5 @@
-import getRandomNumber from 'util.js';
-import getUniqueRandomNumber from 'util.js';
+import {getRandomNumber} from './util.js';
+import {getUniqueRandomNumber} from './util.js';
 
 const PHOTO_COUNT = 25;
 
@@ -47,6 +47,8 @@ const createPhoto = () => {
 };
 
 const createdPhotos = Array.from({length: PHOTO_COUNT}, createPhoto);
+
+export {createdPhotos};
 
 // eslint-disable-next-line no-console
 console.log(createdPhotos);
