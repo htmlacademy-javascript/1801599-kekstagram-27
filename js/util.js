@@ -16,6 +16,9 @@ function getUniqueRandomNumber(min,max){
   if(UniqueRandomNumber.includes(uniqueNumber)){
     return getUniqueRandomNumber(min,max);
   }
+  else if(UniqueRandomNumber.length >= (max - min + 1)) {
+    return null;
+  }
   UniqueRandomNumber.push(uniqueNumber);
   return uniqueNumber;
 }

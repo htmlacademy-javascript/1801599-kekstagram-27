@@ -1,4 +1,5 @@
 import './data.js';
-import {createdPhotos} from './data.js';
+import './mini.js';
+import {randomPhotos} from './data.js';
 // eslint-disable-next-line no-console
-console.log(createdPhotos);
+console.log(randomPhotos);
