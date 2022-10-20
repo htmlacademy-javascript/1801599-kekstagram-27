@@ -1,8 +1,6 @@
 import {getRandomNumber} from './util.js';
 import {getUniqueRandomNumber} from './util.js';
 
-const PHOTO_COUNT = 25;
-
 const DESCRIPTION = [
   'Home sweet home',
   'Breakfast with friends',
@@ -46,9 +44,9 @@ const createPhoto = () => {
   };
 };
 
-const createdPhotos = Array.from({length: PHOTO_COUNT}, createPhoto);
+const randomPhotos = (count) => Array.from({length: count}, createPhoto);
 
-export {createdPhotos};
+export {randomPhotos};
 
 // eslint-disable-next-line no-console
-console.log(createdPhotos);
+console.log(randomPhotos);
