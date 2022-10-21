@@ -47,6 +47,3 @@ const createPhoto = () => {
 const randomPhotos = (count) => Array.from({length: count}, createPhoto);
 
 export {randomPhotos};
-
-// eslint-disable-next-line no-console
-console.log(randomPhotos);
