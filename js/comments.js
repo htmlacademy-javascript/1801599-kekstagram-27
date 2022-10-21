@@ -8,30 +8,55 @@
 //         width="35" height="35">
 //     <p class="social__text">{{текст комментария}}</p>
 // </li>
-import {createdPhotos} from './thumbnails';
+const commentsContainer = document.querySelector('.social__comments');
 
-const commentsContainer = document.querySelrctor('.social__comments');
-commentsContainer.innerHTML = '';
+const updateComments = (comments) => {
+  commentsContainer.innerHTML = '';
+  const commentFragment = document.createDocumentFragment();
 
-const commentFragment = document.createDocumentFragment();
+  comments.forEach((comment) => {
+    const commentItem = document.createElement('li');
+    commentItem.classList.add('social__comment');
+    const commentAvatar = document.createElement('img');
+    commentAvatar.classList.add('social__picture');
+    const commentDescription = document.createElement('p');
+    commentDescription.classList.add('social__text');
+
+    commentAvatar.src = comment.avatar;
+    commentAvatar.alt = comment.name;
+    commentDescription.textContent = comment.message;
+
+    commentItem.appendChild(commentAvatar);
+    commentItem.appendChild(commentDescription);
+    commentFragment.appendChild(commentItem);
+  });
+
+  commentsContainer.appendChild(commentFragment);
+};
+
+export {updateComments};
+// commentsContainer.innerHTML = '';
+
+// const commentFragment = document.createDocumentFragment();
 
 
-createdPhotos.forEach(({comments}) => {
-  const commentItem = document.createElement('li');
-  commentItem.classList.add('social__comment');
-  const commentAvatar = document.createElement('img');
-  commentAvatar.classList.add('social__picture');
-  const commentDescription = document.createElement('p');
-  commentDescription.classList.add('social__text');
+// createdPhotos.forEach(({comments}) => {
+//   const commentItem = document.createElement('li');
+//   commentItem.classList.add('social__comment');
+//   const commentAvatar = document.createElement('img');
+//   commentAvatar.classList.add('social__picture');
+//   const commentDescription = document.createElement('p');
+//   commentDescription.classList.add('social__text');
 
-  commentAvatar.src = comments.avatar;
-  commentAvatar.alt = comments.name;
-  commentDescription.textContent = comments.message;
+//   commentAvatar.src = comments.avatar;
+//   commentAvatar.alt = comments.name;
+//   commentDescription.textContent = comments.message;
 
-  commentItem.appendChild(commentAvatar);
-  commentItem.appendChild(commentDescription);
-  commentFragment.appendChild(commentItem);
-});
+//   commentItem.appendChild(commentAvatar);
+//   commentItem.appendChild(commentDescription);
+//   commentFragment.appendChild(commentItem);
+// });
 
-commentsContainer.appendChild(commentFragment);
+// commentsContainer.appendChild(commentFragment);
+// )};
 
