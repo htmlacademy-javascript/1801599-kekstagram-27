@@ -5,6 +5,7 @@ const PICTURE_TEMPLATE = document.querySelector('#picture').content;
 
 const PICTURE_FRAGMENT = document.createDocumentFragment();
 
+
 const createdPhotos = randomPhotos(10);
 
 createdPhotos.forEach(({url, likes, comments}) => {
