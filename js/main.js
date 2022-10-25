@@ -1,11 +1,19 @@
-import './data.js';
-import './thumbnails.js';
-import './gallery.js';
-import './comments.js';
+// import './data.js';
+// import './thumbnails.js';
+// import './gallery.js';
+// import './comments.js';
 
+
+// // eslint-disable-next-line no-console
+// console.log(randomPhotos);
 
 import {randomPhotos} from './data.js';
+import {renderThumbNails} from './thumbnails.js';
+import {addThunbnailsEventListeners} from './gallery.js';
 
+const PHOTO_COUNT = 25;
+const createdPhotos = randomPhotos(PHOTO_COUNT);
 
-// eslint-disable-next-line no-console
-console.log(randomPhotos);
+renderThumbNails(createdPhotos);
+
+addThunbnailsEventListeners(createdPhotos);

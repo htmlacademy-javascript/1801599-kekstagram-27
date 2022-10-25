@@ -31,4 +31,6 @@ function getCommentLength(comment,maxLength){
 }
 getCommentLength('comment',140);
 
-export { getRandomNumber, getUniqueRandomNumber };
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export { getRandomNumber, getUniqueRandomNumber, isEscapeKey};
