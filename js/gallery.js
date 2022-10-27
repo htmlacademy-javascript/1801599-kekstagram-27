@@ -1,11 +1,10 @@
-import {createdPhotos} from './thumbnails.js';
+// import {createdPhotos} from './thumbnails.js';
 import {updateComments} from './comments.js';
+import {isEscapeKey} from './util.js';
 
 const body = document.querySelector('body');
 const commentsCountContainer = document.querySelector('.social__comment-count');
 const newCommentLoader = document.querySelector('.comments-loader');
-
-const thumbNails = document.querySelectorAll('.picture');
 
 const fullPictureContainer = document.querySelector('.big-picture');
 const fullPicture = fullPictureContainer.querySelector('img');
@@ -13,40 +12,58 @@ const fullPictureLikes = document.querySelector('.likes-count');
 const fullPictureCommentsCount = document.querySelector('.comments-count');
 const fullPictureDescription = document.querySelector('.social__caption');
 
+function addPhoto (photo){
+  fullPicture.src = photo.url;
+  fullPictureLikes.textContent = photo.likes;
+  fullPictureCommentsCount.textContent = photo.comments.length;
+  fullPictureDescription.textContent = photo.description;
+
+  updateComments(photo.comments);
+}
+
+function removePhoto() {
+  fullPicture.innerHTML = ' ';
+}
+
+function closeModal() {
+  fullPictureContainer.classList.add('hidden');
+  commentsCountContainer.classList.remove('hidden');
+  newCommentLoader.classList.remove('hidden');
+  body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onModalEscDown);
+  removePhoto();
+}
+
+function onModalEscDown (evt){
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeModal();
+  }
+}
+
+const closeFullPictureButton = document.querySelector('.big-picture__cancel');
+closeFullPictureButton.addEventListener('click', closeModal);
+
 const addThumbnailClickHandler = function (thumbNail, photo) {
   thumbNail.addEventListener('click', () => {
-    fullPicture.src = photo.url;
-    fullPictureLikes.textContent = photo.likes;
-    fullPictureCommentsCount.textContent = photo.comments.length;
-    fullPictureDescription.textContent = photo.description;
-
-    updateComments(photo.comments);
+    addPhoto(photo);
 
     fullPictureContainer.classList.remove('hidden');
     commentsCountContainer.classList.add('hidden');
     newCommentLoader.classList.add('hidden');
     body.classList.add('modal-open');
+
+
+    document.addEventListener('keydown', onModalEscDown);
   });
 };
 
-for (let i = 0; i < thumbNails.length; i++) {
+function addThunbnailsEventListeners(createdPhotos){
+  const thumbNails = document.querySelectorAll('.picture');
+  for (let i = 0; i < thumbNails.length; i++) {
 
-  addThumbnailClickHandler(thumbNails[i], createdPhotos[i]);
+    addThumbnailClickHandler(thumbNails[i], createdPhotos[i]);
+  }
 }
 
-const closeModal = () => {
-  fullPictureContainer.classList.add('hidden');
-  commentsCountContainer.classList.remove('hidden');
-  newCommentLoader.classList.remove('hidden');
-  body.classList.remove('modal-open');
-};
-
-const closeFullPictureButton = document.querySelector('.big-picture__cancel');
-closeFullPictureButton.addEventListener('click', closeModal);
-
-document.addEventListener('keydown', (evt) => {
-  if (evt.keyCode === 27) {
-    evt.preventDefault();
-    closeModal();
-  }
-});
+export {addThunbnailsEventListeners};
