@@ -23,14 +23,14 @@ function getUniqueRandomNumber(min,max){
   return uniqueNumber;
 }
 
-function getCommentLength(comment,maxLength){
+function isCommentLengthValid(comment,maxLength){
   if(comment.length > maxLength) {
     return false;
   }
   return true;
 }
-getCommentLength('comment',140);
+isCommentLengthValid('comment',140);
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export { getRandomNumber, getUniqueRandomNumber, isEscapeKey};
+export { getRandomNumber, getUniqueRandomNumber,isCommentLengthValid, isEscapeKey};

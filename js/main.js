@@ -10,6 +10,7 @@
 import {randomPhotos} from './data.js';
 import {renderThumbNails} from './thumbnails.js';
 import {addThunbnailsEventListeners} from './gallery.js';
+// import {onUploadForm} from './upload-form.js';
 
 const PHOTO_COUNT = 25;
 const createdPhotos = randomPhotos(PHOTO_COUNT);
@@ -17,3 +18,5 @@ const createdPhotos = randomPhotos(PHOTO_COUNT);
 renderThumbNails(createdPhotos);
 
 addThunbnailsEventListeners(createdPhotos);
+
+// onUploadForm();
