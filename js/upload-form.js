@@ -60,23 +60,18 @@ export {onUploadForm};
 // ********************************************************************************
 
 
-const pristine = new Pristine(uploadForm);
-
-const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
-
-const userHashtagArray = hashtagInput.value.split(' ');
-
-const hashtagIsValid = userHashtagArray.every((item) => hashtag.test(item));
-
-const duplicatedHashtags = userHashtagArray.filter((hastag, index, hashtags) => hashtags.indexOf(hashtag) !== index);
-
-// eslint-disable-next-line no-console
-console.log(duplicatedHashtags);
-
 function validateHastag () {
+  const hashtagRX = /^#[a-zа-яё0-9]{1,19}$/i;
+
+  const userHashtagArray = hashtagInput.value.split(' ');
+
+  const hashtagIsValid = userHashtagArray.every((item) => hashtagRX.test(item));
+
+  const duplicatedHashtags = userHashtagArray.filter((hashtag, index, hashtags) => hashtags.indexOf(hashtag) !== index);
+
   if(hashtagIsValid &&
-  userHashtagArray.lenth <= 5 &&
-  duplicatedHashtags.lenght === 0){
+  userHashtagArray.length <= 5 &&
+  duplicatedHashtags.length === 0){
     return true;
   }
   else {
@@ -85,12 +80,17 @@ function validateHastag () {
 }
 
 function validateUploadPhotoDescription(){
-  return isCommentLengthValid(hashtagInput.value,140);
+  return isCommentLengthValid(uploadPhotoDescription.value,140);
 }
 
+const pristine = new Pristine(uploadForm);
 pristine.addValidator(hashtagInput, validateHastag);
 pristine.addValidator(uploadPhotoDescription, validateUploadPhotoDescription);
+uploadForm.addEventListener('submit', (evt) => {
+  const valid = pristine.validate();
 
-// строка после решётки должна состоять из букв и чисел и не может содержать пробелы,
-// спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.;
+  if (!valid) {
+    evt.preventDefault();
+  }
+});
 
