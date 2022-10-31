@@ -1,7 +1,7 @@
 
 const commentsContainer = document.querySelector('.social__comments');
 
-const updateComments = (comments) => {
+const renderComments = (comments) => {
   commentsContainer.innerHTML = '';
   const commentFragment = document.createDocumentFragment();
 
@@ -25,4 +25,4 @@ const updateComments = (comments) => {
   commentsContainer.appendChild(commentFragment);
 };
 
-export {updateComments};
+export {renderComments};
