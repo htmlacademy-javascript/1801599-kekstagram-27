@@ -53,12 +53,6 @@ uploadPhotoDescription.addEventListener('focus', () => {
   document.addEventListener('keydown', onUploadFormlEscDown);
 });
 
-export {onUploadForm};
-
-
-// ********************************************************************************
-// ********************************************************************************
-
 
 function validateHastag () {
   const hashtagRX = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -94,3 +88,51 @@ uploadForm.addEventListener('submit', (evt) => {
   }
 });
 
+
+const scaleControlSmaller = document.querySelector('.scale__control--smaller');
+const scaleControlBigger = document.querySelector('.scale__control--bigger');
+scaleControlBigger.disabled = true;
+const scaleControlValue = document.querySelector('.scale__control--value');
+const uploadPhoto = document.querySelector('.img-upload__preview');
+let scaleControlStartValue = 100;
+const scaleStep = 25;
+const transformStep = 0.25;
+let transformStartValue = 1;
+
+scaleControlValue.value = `${scaleControlStartValue}%`;
+function makePhotoSmaller(evt) {
+  evt.preventDefault();
+  scaleControlStartValue -= scaleStep;
+  scaleControlValue.value = `${scaleControlStartValue}%`;
+
+  transformStartValue -= transformStep;
+  const transformScale = `scale(${ transformStartValue })`;
+  uploadPhoto.style.transform = transformScale;
+
+  scaleControlBigger.disabled = false;
+
+  if(scaleControlStartValue <= scaleStep){
+    scaleControlSmaller.disabled = true;
+  }
+}
+function makePhotoBigger(evt) {
+  evt.preventDefault();
+  scaleControlStartValue += scaleStep;
+  scaleControlValue.value = `${scaleControlStartValue}%`;
+
+  transformStartValue += transformStep;
+  const transformScale = `scale(${ transformStartValue })`;
+  uploadPhoto.style.transform = transformScale;
+
+  scaleControlSmaller.disabled = false;
+
+  if(scaleControlStartValue >= 100){
+    scaleControlBigger.disabled = true;
+  }
+}
+
+scaleControlSmaller.addEventListener('click', makePhotoSmaller);
+scaleControlBigger.addEventListener('click', makePhotoBigger);
+
+
+export {onUploadForm};
