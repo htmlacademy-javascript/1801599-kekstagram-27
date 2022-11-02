@@ -53,12 +53,8 @@ uploadPhotoDescription.addEventListener('focus', () => {
   document.addEventListener('keydown', onUploadFormlEscDown);
 });
 
-export {onUploadForm};
-
-
-// ********************************************************************************
-// ********************************************************************************
-
+// *****************************************************
+// Валидация полей описания и хештега
 
 function validateHastag () {
   const hashtagRX = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -94,3 +90,176 @@ uploadForm.addEventListener('submit', (evt) => {
   }
 });
 
+// *****************************************************
+// Изменение масштаба изображения
+
+const scaleControlSmaller = document.querySelector('.scale__control--smaller');
+const scaleControlBigger = document.querySelector('.scale__control--bigger');
+scaleControlBigger.disabled = true;
+const scaleControlValue = document.querySelector('.scale__control--value');
+const uploadPhoto = document.querySelector('.img-upload__preview');
+let scaleControlStartValue = 100;
+const scaleStep = 25;
+const scaleMin = 25;
+const scaleMax = 100;
+const transformStep = 0.25;
+let transformStartValue = 1;
+
+scaleControlValue.value = `${scaleControlStartValue}%`;
+function makePhotoSmaller(evt) {
+  evt.preventDefault();
+  scaleControlStartValue -= scaleStep;
+  scaleControlValue.value = `${scaleControlStartValue}%`;
+
+  transformStartValue -= transformStep;
+  const transformScale = `scale(${ transformStartValue })`;
+  uploadPhoto.style.transform = transformScale;
+
+  scaleControlBigger.disabled = false;
+
+  if(scaleControlStartValue <= scaleMin){
+    scaleControlSmaller.disabled = true;
+  }
+}
+function makePhotoBigger(evt) {
+  evt.preventDefault();
+  scaleControlStartValue += scaleStep;
+  scaleControlValue.value = `${scaleControlStartValue}%`;
+
+  transformStartValue += transformStep;
+  const transformScale = `scale(${ transformStartValue })`;
+  uploadPhoto.style.transform = transformScale;
+
+  scaleControlSmaller.disabled = false;
+
+  if(scaleControlStartValue >= scaleMax){
+    scaleControlBigger.disabled = true;
+  }
+}
+
+scaleControlSmaller.addEventListener('click', makePhotoSmaller);
+scaleControlBigger.addEventListener('click', makePhotoBigger);
+
+// *****************************************************
+// Наложение фильтров
+
+const effectSliderContainer = document.querySelector('.img-upload__effect-level');
+const effectValue = document.querySelector('.effect-level__value');
+let effectCurrentClass;
+const effectOriginal = document.querySelector('#effect-none');
+const effectChrome = document.querySelector('#effect-chrome');
+const effectSepia = document.querySelector('#effect-sepia');
+const effectMarvin = document.querySelector('#effect-marvin');
+const effectPhobos = document.querySelector('#effect-phobos');
+const effectHeat = document.querySelector('#effect-heat');
+let isSliderInitialized = false;
+
+effectOriginal.addEventListener('change', () => {
+  if(effectOriginal.checked){
+    uploadPhoto.classList.remove(effectCurrentClass);
+    uploadPhoto.style.filter = '';
+    if(isSliderInitialized) {
+      effectSliderContainer.noUiSlider.destroy();
+      isSliderInitialized = false;
+    }
+  }
+});
+
+
+function activateFilter(filterEffectClass, getFilterStyle) {
+  if (!isSliderInitialized){
+    noUiSlider.create(effectSliderContainer, {
+      range: {
+        min: 0,
+        max: 1,
+      },
+      start: 1,
+      step: 0.1,
+      connect: 'lower',
+    });
+    isSliderInitialized = true;
+  }
+  uploadPhoto.classList.remove(effectCurrentClass);
+  effectSliderContainer.noUiSlider.off();
+  uploadPhoto.classList.add(filterEffectClass);
+  effectCurrentClass = filterEffectClass;
+  effectSliderContainer.noUiSlider.on('update', () => {
+    effectValue.value = effectSliderContainer.noUiSlider.get();
+    uploadPhoto.style.filter = getFilterStyle(effectValue.value);
+  });
+}
+
+
+effectChrome.addEventListener('change', (evt) => {
+  if(evt.target.checked){
+    activateFilter('effects__preview--chrome', (currentValue) => `greyscale(${ currentValue })`);
+
+    effectSliderContainer.noUiSlider.updateOptions({
+      range: {
+        min: 0,
+        max: 1,
+      },
+      start: 1,
+      step: 0.1,
+    });
+  }
+});
+
+effectSepia.addEventListener('change', (evt) => {
+  if(evt.target.checked){
+    activateFilter('effects__preview--sepia', (currentValue) => `sepia(${ currentValue })`);
+
+    effectSliderContainer.noUiSlider.updateOptions({
+      range: {
+        min: 0,
+        max: 1,
+      },
+      start: 1,
+      step: 0.1,
+    });
+  }
+});
+
+effectMarvin.addEventListener('change', (evt) => {
+  if(evt.target.checked){
+    activateFilter('effects__preview--marvin', (currentValue) => `invert(${ currentValue }%)`);
+    effectSliderContainer.noUiSlider.updateOptions({
+      range: {
+        min: 0,
+        max: 100,
+      },
+      start: 100,
+      step: 1,
+    });
+  }
+});
+
+effectPhobos.addEventListener('change', (evt) => {
+  if(evt.target.checked){
+    activateFilter('effects__preview--phobos', (currentValue) => `blur(${ currentValue }px)`);
+    effectSliderContainer.noUiSlider.updateOptions({
+      range: {
+        min: 0,
+        max: 3,
+      },
+      start: 3,
+      step: 0.1,
+    });
+  }
+});
+
+effectHeat.addEventListener('change', (evt) => {
+  if(evt.target.checked){
+    activateFilter('effects__preview--heat', (currentValue) => `brightness(${ currentValue })`);
+    effectSliderContainer.noUiSlider.updateOptions({
+      range: {
+        min: 1,
+        max: 3,
+      },
+      start: 3,
+      step: 0.1,
+    });
+  }
+});
+
+export {onUploadForm};

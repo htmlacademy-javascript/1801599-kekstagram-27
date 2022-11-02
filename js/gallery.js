@@ -64,9 +64,10 @@ const addThumbnailClickHandler = function (thumbNail, photo) {
     if(hiddenComments.length === 0){loadMoreComments.classList.add('hidden');}
 
     loadMoreComments.addEventListener('click', () => {
-      const newDisplayedComments = allComments.slice(n, n + 5);
+      const displayedCommentsNumber = 5;
+      const newDisplayedComments = allComments.slice(n, n + displayedCommentsNumber);
       newDisplayedComments.forEach((comment) => {comment.classList.remove('visually-hidden');});
-      n += 5;
+      n += displayedCommentsNumber;
       hiddenComments = allCommentsList.querySelectorAll('.visually-hidden');
       displayedCommentsCount = allComments.length - hiddenComments.length;
       commentsCountContainer.textContent = `${displayedCommentsCount } из ${fullPictureCommentsCount.textContent} комментариев`;
