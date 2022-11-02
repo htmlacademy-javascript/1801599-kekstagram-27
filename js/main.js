@@ -12,7 +12,7 @@ import {renderThumbNails} from './thumbnails.js';
 import {addThunbnailsEventListeners} from './gallery.js';
 import {onUploadForm} from './upload-form.js';
 
-const PHOTO_COUNT = 25;
+const PHOTO_COUNT = 24;
 const createdPhotos = randomPhotos(PHOTO_COUNT);
 
 renderThumbNails(createdPhotos);
