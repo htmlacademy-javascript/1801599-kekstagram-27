@@ -16,4 +16,6 @@ const renderThumbNails = (createdPhotos) => {
 };
 
 
-export {PICTURES_LIST, renderThumbNails};
+export {renderThumbNails};
+
+
