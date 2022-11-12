@@ -1,7 +1,8 @@
-import {isEscapeKey} from './util.js';
-import {isCommentLengthValid} from './util.js';
+import {isEscapeKey, isCommentLengthValid} from './util.js';
+import {showSuccessMessage, showUploadErrorMessage} from './messages.js';
 
 const uploadForm = document.querySelector('#upload-select-image');
+const scaleControlValue = document.querySelector('.scale__control--value');
 
 const uploadFormInput = document.querySelector('#upload-file');
 const imgUploadModal = document.querySelector('.img-upload__overlay');
@@ -9,11 +10,14 @@ const imgUploadModal = document.querySelector('.img-upload__overlay');
 const hashtagInput = document.querySelector('.text__hashtags');
 const uploadPhotoDescription = document.querySelector('.text__description');
 
+const uploadPhoto = document.querySelector('.img-upload__preview');
+
+const effectOriginal = document.querySelector('#effect-none');
+
 function onUploadForm() {
   uploadFormInput.addEventListener('change', () =>{
     imgUploadModal.classList.remove('hidden');
     document.querySelector('body').classList.add('modal-open');
-
     document.addEventListener('keydown', onUploadFormlEscDown);
   });
 }
@@ -27,6 +31,10 @@ function closeUploadForm(){
   hashtagInput.value = '';
   uploadPhotoDescription.value = '';
   document.removeEventListener('keydown', onUploadFormlEscDown);
+  scaleControlValue.value = '100%';
+  uploadPhoto.style.transform = 'scale(1)';
+  applyOriginalEffect();
+  effectOriginal.checked = true;
 }
 
 function onUploadFormlEscDown (evt){
@@ -53,13 +61,15 @@ uploadPhotoDescription.addEventListener('focus', () => {
   document.addEventListener('keydown', onUploadFormlEscDown);
 });
 
+export {closeUploadForm};
+
 // *****************************************************
 // Валидация полей описания и хештега
 
 function validateHastag () {
   const hashtagRX = /^#[a-zа-яё0-9]{1,19}$/i;
 
-  const userHashtagArray = hashtagInput.value.split(' ');
+  const userHashtagArray = hashtagInput.value.split(' ').filter((item) => item.length > 0);
 
   const hashtagIsValid = userHashtagArray.every((item) => hashtagRX.test(item));
 
@@ -82,13 +92,39 @@ function validateUploadPhotoDescription(){
 const pristine = new Pristine(uploadForm);
 pristine.addValidator(hashtagInput, validateHastag);
 pristine.addValidator(uploadPhotoDescription, validateUploadPhotoDescription);
-uploadForm.addEventListener('submit', (evt) => {
-  const valid = pristine.validate();
 
-  if (!valid) {
+const setUserFormSubmit = () => {
+
+  uploadForm.addEventListener('submit', (evt) => {
+    const isValid = pristine.validate();
     evt.preventDefault();
-  }
-});
+    if(isValid) {
+      const formData = new FormData(evt.target);
+      fetch(
+        'https://27.javascript.pages.academy/kekstagram12',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      ) .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+
+        throw new Error(`${response.status} ${response.statusText}`);
+      })
+        .then(() => {
+          showSuccessMessage();
+          closeUploadForm();
+        })
+        .catch(() => {
+          showUploadErrorMessage();
+        });
+    }
+  });
+};
+
+export {setUserFormSubmit};
 
 // *****************************************************
 // Изменение масштаба изображения
@@ -96,8 +132,7 @@ uploadForm.addEventListener('submit', (evt) => {
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 scaleControlBigger.disabled = true;
-const scaleControlValue = document.querySelector('.scale__control--value');
-const uploadPhoto = document.querySelector('.img-upload__preview');
+
 let scaleControlStartValue = 100;
 const scaleStep = 25;
 const scaleMin = 25;
@@ -106,7 +141,7 @@ const transformStep = 0.25;
 let transformStartValue = 1;
 
 scaleControlValue.value = `${scaleControlStartValue}%`;
-function makePhotoSmaller(evt) {
+function onPhotoSmallerClick(evt) {
   evt.preventDefault();
   scaleControlStartValue -= scaleStep;
   scaleControlValue.value = `${scaleControlStartValue}%`;
@@ -121,7 +156,7 @@ function makePhotoSmaller(evt) {
     scaleControlSmaller.disabled = true;
   }
 }
-function makePhotoBigger(evt) {
+function onPhotoBiggerClick(evt) {
   evt.preventDefault();
   scaleControlStartValue += scaleStep;
   scaleControlValue.value = `${scaleControlStartValue}%`;
@@ -137,16 +172,15 @@ function makePhotoBigger(evt) {
   }
 }
 
-scaleControlSmaller.addEventListener('click', makePhotoSmaller);
-scaleControlBigger.addEventListener('click', makePhotoBigger);
+scaleControlSmaller.addEventListener('click', onPhotoSmallerClick);
+scaleControlBigger.addEventListener('click', onPhotoBiggerClick);
 
 // *****************************************************
 // Наложение фильтров
 
-const effectSliderContainer = document.querySelector('.img-upload__effect-level');
+const effectSliderContainer = document.querySelector('.effect-level__slider');
 const effectValue = document.querySelector('.effect-level__value');
 let effectCurrentClass;
-const effectOriginal = document.querySelector('#effect-none');
 const effectChrome = document.querySelector('#effect-chrome');
 const effectSepia = document.querySelector('#effect-sepia');
 const effectMarvin = document.querySelector('#effect-marvin');
@@ -154,14 +188,18 @@ const effectPhobos = document.querySelector('#effect-phobos');
 const effectHeat = document.querySelector('#effect-heat');
 let isSliderInitialized = false;
 
+function applyOriginalEffect() {
+  uploadPhoto.classList.remove(effectCurrentClass);
+  uploadPhoto.style.filter = '';
+  if(isSliderInitialized) {
+    effectSliderContainer.noUiSlider.destroy();
+    isSliderInitialized = false;
+  }
+}
+
 effectOriginal.addEventListener('change', () => {
   if(effectOriginal.checked){
-    uploadPhoto.classList.remove(effectCurrentClass);
-    uploadPhoto.style.filter = '';
-    if(isSliderInitialized) {
-      effectSliderContainer.noUiSlider.destroy();
-      isSliderInitialized = false;
-    }
+    applyOriginalEffect();
   }
 });
 
@@ -263,3 +301,15 @@ effectHeat.addEventListener('change', (evt) => {
 });
 
 export {onUploadForm};
+
+// Добавьте обработчик отправки формы, если ещё этого не сделали, который бы отменял действие формы по умолчанию
+// и отправлял данные формы посредством fetch на сервер.
+
+// 3.1. После заполнения всех данных, при нажатии на кнопку «Отправить», все данные из формы, включая изображения,
+// с помощью AJAX-запроса отправляются на сервер https://27.javascript.pages.academy/kekstagram методом POST с типом multipart/form-data.
+// На время выполнения запроса к серверу кнопка «Отправить» блокируется.
+
+// 3.2. Страница реагирует на неправильно введённые значения в форму.
+// Если данные, введённые в форму, не соответствуют ограничениям, указанным в пунктах 2.3 и 2.4, форму невозможно отправить на сервер.
+// При попытке отправить форму с неправильными данными, отправки не происходит, а пользователю показываются ошибки для неверно
+// заполненных полей (для проверки данных используется сторонняя библиотека Pristine).

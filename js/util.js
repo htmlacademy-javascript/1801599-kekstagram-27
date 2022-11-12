@@ -33,4 +33,4 @@ isCommentLengthValid('comment',140);
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export { getRandomNumber, getUniqueRandomNumber,isCommentLengthValid, isEscapeKey};
+export {getRandomNumber, getUniqueRandomNumber,isCommentLengthValid, isEscapeKey};
