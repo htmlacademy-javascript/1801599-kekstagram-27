@@ -23,6 +23,7 @@ function getUniqueRandomNumber(min,max){
   return uniqueNumber;
 }
 
+
 function isCommentLengthValid(comment,maxLength){
   if(comment.length > maxLength) {
     return false;
@@ -33,4 +34,14 @@ isCommentLengthValid('comment',140);
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomNumber, getUniqueRandomNumber,isCommentLengthValid, isEscapeKey};
+function debounce (callback, timeoutDelay) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+
+export {getRandomNumber, getUniqueRandomNumber,isCommentLengthValid, isEscapeKey, debounce};

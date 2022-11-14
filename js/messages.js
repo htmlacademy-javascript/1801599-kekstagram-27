@@ -24,11 +24,6 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-// const close = () => {
-//   document.body.remove(currentOpenMessage);
-//   document.removeEventListener('keydown', onUploadFormlEscDown);
-// };
-
 const showMessage = (message, button) => {
   document.body.append(message);
 

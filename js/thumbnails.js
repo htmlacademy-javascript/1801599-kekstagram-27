@@ -12,6 +12,9 @@ const renderThumbNails = (createdPhotos) => {
     newPhoto.querySelector('.picture__comments').textContent = comments.length;
     PICTURE_FRAGMENT.appendChild(newPhoto);
   });
+
+  const allPictures = document.querySelectorAll('.picture');
+  allPictures.forEach((e) => e.remove());
   PICTURES_LIST.appendChild(PICTURE_FRAGMENT);
 };
 
