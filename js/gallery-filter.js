@@ -1,9 +1,10 @@
 const galleryFilterContainer = document.querySelector('.img-filters');
 const defaultGalleryFilterButton = document.querySelector('#filter-default');
 const randomGalleryFilterButton = document.querySelector('#filter-random');
-const RANDOM_PHOTOS_COUNT = 10;
 const discussedGalleryFilterButton = document.querySelector('#filter-discussed');
 const allGalleryFilterButtons = Array.from(document.querySelectorAll('.img-filters__button'));
+
+const RANDOM_PHOTOS_COUNT = 10;
 
 const setDefaultClick = (cb) => {
   defaultGalleryFilterButton.addEventListener('click', () => {
@@ -38,9 +39,8 @@ const setRandomClick = (cb) => {
   });
 };
 
-function showFilterContainer() {
+const showFilterContainer = () =>
   galleryFilterContainer.classList.remove('img-filters--inactive');
-}
 
 const getDiscussedPhotos = (photos) => photos.slice().sort(compareComments);
 const getRandomPhotos = (photos) => photos.slice()
