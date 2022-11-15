@@ -1,26 +1,47 @@
+import {getPhotos} from './data.js';
 import {renderThumbNails} from './thumbnails.js';
 import {addThunbnailsEventListeners} from './gallery.js';
 import {showAlert} from './messages.js';
 import {onUploadForm} from './upload-form.js';
 import {closeUploadForm} from './upload-form.js';
 import {setUserFormSubmit} from './upload-form.js';
+import {showFilterContainer, getDiscussedPhotos,getRandomPhotos, setDefaultClick, setRandomClick, setDiscussedClick} from './gallery-filter.js';
+import {debounce} from './util.js';
+
+const RERENDER_DELAY = 1000;
 
 setUserFormSubmit(closeUploadForm);
 
-fetch('https://27.javascript.pages.academy/kekstagram/data')
-  .then((response) => {
-    if (response.ok) {
-      return response.json();
-    }
+getPhotos((photos) => {
+  renderThumbNails(photos);
+  addThunbnailsEventListeners(photos);
+  showFilterContainer();
 
-    throw new Error(`${response.status} ${response.statusText}`);
-  })
-  .then((photos) => {
-    renderThumbNails(photos);
-    addThunbnailsEventListeners(photos);
-  })
-  .catch(() => {
-    showAlert('Не удалось загрузить фотографии пользователей. Попробуйте ещё раз');
-  });
+  setDefaultClick(debounce(
+    () => {
+      renderThumbNails(photos);
+      addThunbnailsEventListeners(photos);
+    }, RERENDER_DELAY
+  ));
+
+  setDiscussedClick(debounce(
+    () => {
+      const discussedPhotos = getDiscussedPhotos(photos);
+      renderThumbNails(discussedPhotos);
+      addThunbnailsEventListeners(discussedPhotos);
+    },
+    RERENDER_DELAY,
+  ));
+
+  setRandomClick(debounce(
+    () => {
+      const randomPhotos = getRandomPhotos(photos);
+      renderThumbNails(randomPhotos);
+      addThunbnailsEventListeners(randomPhotos);
+    }, RERENDER_DELAY
+  ));
+
+}, showAlert);
 
 onUploadForm();
+
