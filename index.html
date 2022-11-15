@@ -244,6 +244,8 @@
                         name="hashtags"
                         placeholder="#ХэшТег"
                         value=""
+                        data-pristine-pattern="/^#[a-zа-яё0-9]{1,19}$/i"
+                        data-pristine-pattern-message="хештеги должны разделяться пробелами и начинатся с #. Максимальная длина хештега - 20 символов. Не более 5 хештегов "
                       />
                     </div>
                     <div class="img-upload__field-wrapper">
@@ -251,6 +253,8 @@
                         class="text__description"
                         name="description"
                         placeholder="Ваш комментарий..."
+                        data-pristine-maxlength="140"
+                        data-pristine-maxlength-message="Максимальная длина 140 символов"
                       ></textarea>
                     </div>
                   </fieldset>

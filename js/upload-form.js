@@ -71,7 +71,7 @@ hashtagInput.addEventListener('blur', () => {
 uploadPhotoDescription.addEventListener('focus', () => {
   document.removeEventListener('keydown', onUploadFormlEscDown);
 });
-uploadPhotoDescription.addEventListener('focus', () => {
+uploadPhotoDescription.addEventListener('blur', () => {
   document.addEventListener('keydown', onUploadFormlEscDown);
 });
 

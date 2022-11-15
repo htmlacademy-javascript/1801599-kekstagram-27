@@ -1,43 +1,21 @@
 const galleryFilterContainer = document.querySelector('.img-filters');
-const defaultGalleryFilterButton = document.querySelector('#filter-default');
-const randomGalleryFilterButton = document.querySelector('#filter-random');
-const discussedGalleryFilterButton = document.querySelector('#filter-discussed');
 const allGalleryFilterButtons = Array.from(document.querySelectorAll('.img-filters__button'));
 
 const RANDOM_PHOTOS_COUNT = 10;
 
-const setDefaultClick = (cb) => {
-  defaultGalleryFilterButton.addEventListener('click', () => {
+const setFilterButtonClick = (button, cb) => {
+  button.addEventListener('click', () => {
     cb();
-    allGalleryFilterButtons.forEach((button) =>
-      button.classList.remove('img-filters__button--active')
+    allGalleryFilterButtons.forEach((item) =>
+      item.classList.remove('img-filters__button--active')
     );
-    defaultGalleryFilterButton.classList.add('img-filters__button--active');
+    button.classList.add('img-filters__button--active');
   });
 };
 
 const compareComments = (commentA, commentB) =>
   commentB.comments.length - commentA.comments.length;
 
-const setDiscussedClick = (cb) => {
-  discussedGalleryFilterButton.addEventListener('click', () => {
-    allGalleryFilterButtons.forEach((button) =>
-      button.classList.remove('img-filters__button--active')
-    );
-    discussedGalleryFilterButton.classList.add('img-filters__button--active');
-    cb();
-  });
-};
-
-const setRandomClick = (cb) => {
-  randomGalleryFilterButton.addEventListener('click', () => {
-    allGalleryFilterButtons.forEach((button) =>
-      button.classList.remove('img-filters__button--active')
-    );
-    randomGalleryFilterButton.classList.add('img-filters__button--active');
-    cb();
-  });
-};
 
 const showFilterContainer = () =>
   galleryFilterContainer.classList.remove('img-filters--inactive');
@@ -49,9 +27,7 @@ const getRandomPhotos = (photos) => photos.slice()
 
 export {
   showFilterContainer,
+  setFilterButtonClick,
   getDiscussedPhotos,
-  setDefaultClick,
   getRandomPhotos,
-  setRandomClick,
-  setDiscussedClick,
 };

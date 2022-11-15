@@ -10,7 +10,11 @@ const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_COUNT = 5;
 
 
-const pristine = new Pristine(uploadForm);
+const pristine = new Pristine(uploadForm, {
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+});
+
 pristine.addValidator(hashtagInput, validateHastag);
 pristine.addValidator(uploadPhotoDescription, validateUploadPhotoDescription);
 
