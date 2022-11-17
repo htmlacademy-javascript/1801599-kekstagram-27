@@ -12,26 +12,28 @@ const fullPictureDescription = document.querySelector('.social__caption');
 const loadMoreComments = document.querySelector('.comments-loader');
 const allCommentsList = document.querySelector('.social__comments');
 
-function addPhoto (photo){
+const DISPLAYED_COMMENTS_NUMBER = 5;
+
+const addPhoto = (photo) => {
   fullPicture.src = photo.url;
   fullPictureLikes.textContent = photo.likes;
   fullPictureCommentsCount.textContent = photo.comments.length;
   fullPictureDescription.textContent = photo.description;
 
   renderComments(photo.comments);
-}
+};
 
 function removePhoto() {
   fullPicture.innerHTML = ' ';
 }
 
-function closeModal() {
+const closeModal = () => {
   fullPictureContainer.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onModalEscDown);
   loadMoreComments.classList.remove('hidden');
   removePhoto();
-}
+};
 
 function onModalEscDown (evt){
   if (isEscapeKey(evt)) {
@@ -64,10 +66,9 @@ const addThumbnailClickHandler = function (thumbNail, photo) {
     if(hiddenComments.length === 0){loadMoreComments.classList.add('hidden');}
 
     loadMoreComments.addEventListener('click', () => {
-      const displayedCommentsNumber = 5;
-      const newDisplayedComments = allComments.slice(n, n + displayedCommentsNumber);
+      const newDisplayedComments = allComments.slice(n, n + DISPLAYED_COMMENTS_NUMBER);
       newDisplayedComments.forEach((comment) => {comment.classList.remove('visually-hidden');});
-      n += displayedCommentsNumber;
+      n += DISPLAYED_COMMENTS_NUMBER;
       hiddenComments = allCommentsList.querySelectorAll('.visually-hidden');
       displayedCommentsCount = allComments.length - hiddenComments.length;
       commentsCountContainer.textContent = `${displayedCommentsCount } из ${fullPictureCommentsCount.textContent} комментариев`;
@@ -78,12 +79,12 @@ const addThumbnailClickHandler = function (thumbNail, photo) {
   });
 };
 
-function addThunbnailsEventListeners(createdPhotos){
+const addThunbnailsEventListeners = (createdPhotos) => {
   const thumbNails = document.querySelectorAll('.picture');
   for (let i = 0; i < thumbNails.length; i++) {
 
     addThumbnailClickHandler(thumbNails[i], createdPhotos[i]);
   }
-}
+};
 
 export {addThunbnailsEventListeners};
