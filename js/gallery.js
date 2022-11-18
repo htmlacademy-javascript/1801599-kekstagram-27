@@ -1,6 +1,8 @@
 import {renderComments} from './comments.js';
 import {isEscapeKey} from './util.js';
 
+const DISPLAYED_COMMENTS_NUMBER = 5;
+
 const body = document.querySelector('body');
 const commentsCountContainer = document.querySelector('.social__comment-count');
 
@@ -12,7 +14,6 @@ const fullPictureDescription = document.querySelector('.social__caption');
 const loadMoreComments = document.querySelector('.comments-loader');
 const allCommentsList = document.querySelector('.social__comments');
 
-const DISPLAYED_COMMENTS_NUMBER = 5;
 
 const addPhoto = (photo) => {
   fullPicture.src = photo.url;
@@ -45,7 +46,7 @@ function onModalEscDown (evt){
 const closeFullPictureButton = document.querySelector('.big-picture__cancel');
 closeFullPictureButton.addEventListener('click', closeModal);
 
-const addThumbnailClickHandler = function (thumbNail, photo) {
+const addThumbnailClickHandler = (thumbNail, photo) => {
   thumbNail.addEventListener('click', () => {
     addPhoto(photo);
 

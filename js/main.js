@@ -7,11 +7,11 @@ import {setUserFormSubmit} from './form-validation.js';
 import {showFilterContainer, getDiscussedPhotos,getRandomPhotos, setFilterButtonClick} from './gallery-filter.js';
 import {debounce} from './util.js';
 
+const RERENDER_DELAY = 1000;
 
 const defaultGalleryFilterButton = document.querySelector('#filter-default');
 const discussedGalleryFilterButton = document.querySelector('#filter-discussed');
 const randomGalleryFilterButton = document.querySelector('#filter-random');
-const RERENDER_DELAY = 1000;
 
 setUserFormSubmit(closeUploadForm);
 
