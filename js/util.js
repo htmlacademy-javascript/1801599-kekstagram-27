@@ -1,10 +1,4 @@
-const isCommentLengthValid = (comment,maxLength) => {
-  if(comment.length > maxLength) {
-    return false;
-  }
-  return true;
-};
-isCommentLengthValid('comment',140);
+const isCommentLengthValid = (comment,maxLength) => comment.length < maxLength;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 

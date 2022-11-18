@@ -52,7 +52,7 @@ const activateFilter = (filterEffectClass, getFilterStyle) => {
 
 effectChrome.addEventListener('change', (evt) => {
   if(evt.target.checked){
-    activateFilter('effects__preview--chrome', (currentValue) => `greyscale(${ currentValue })`);
+    activateFilter('effects__preview--chrome', (currentValue) => `grayscale(${ currentValue })`);
 
     effectSliderContainer.noUiSlider.updateOptions({
       range: {

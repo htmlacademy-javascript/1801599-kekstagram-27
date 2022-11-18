@@ -1,7 +1,7 @@
+const RANDOM_PHOTOS_COUNT = 10;
+
 const galleryFilterContainer = document.querySelector('.img-filters');
 const allGalleryFilterButtons = Array.from(document.querySelectorAll('.img-filters__button'));
-
-const RANDOM_PHOTOS_COUNT = 10;
 
 const setFilterButtonClick = (button, cb) => {
   button.addEventListener('click', () => {

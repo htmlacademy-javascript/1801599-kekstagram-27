@@ -1,11 +1,14 @@
 import {isEscapeKey} from './util.js';
 import {onPhotoSmallerClick, onPhotoBiggerClick} from './img-scale.js';
 import {applyOriginalEffect} from './img-filter.js';
+import {pristine} from './form-validation.js';
+
+const SCALE_START_VALUE = 100;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const scaleControlValue = document.querySelector('.scale__control--value');
-const scaleControlStartValue = 100;
 
 const uploadFormInput = document.querySelector('#upload-file');
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const imgUploadModal = document.querySelector('.img-upload__overlay');
 
 const hashtagInput = document.querySelector('.text__hashtags');
@@ -18,7 +21,8 @@ const effectOriginal = document.querySelector('#effect-none');
 
 const onUploadForm = () => {
   uploadFormInput.addEventListener('change', () =>{
-    scaleControlValue.value = `${scaleControlStartValue}%`;
+    pristine.reset();
+    scaleControlValue.value = `${SCALE_START_VALUE}%`;
     const scaleControlSmaller = document.querySelector('.scale__control--smaller');
     const scaleControlBigger = document.querySelector('.scale__control--bigger');
     scaleControlSmaller.addEventListener('click', onPhotoSmallerClick);
@@ -45,7 +49,7 @@ function closeUploadForm(){
   hashtagInput.value = '';
   uploadPhotoDescription.value = '';
   document.removeEventListener('keydown', onUploadFormlEscDown);
-  scaleControlValue.value = `${scaleControlStartValue}%`;
+  scaleControlValue.value = `${SCALE_START_VALUE}%`;
   uploadPhoto.style.transform = 'scale(1)';
   applyOriginalEffect();
   effectOriginal.checked = true;
