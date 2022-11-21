@@ -42,7 +42,7 @@ const onUploadForm = () => {
 
 
 const uploadFormCloseButton = document.querySelector('#upload-cancel');
-function closeUploadForm(){
+const closeUploadForm = () => {
   imgUploadModal.classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
   uploadFormInput.value = '';
@@ -53,7 +53,7 @@ function closeUploadForm(){
   uploadPhoto.style.transform = 'scale(1)';
   applyOriginalEffect();
   effectOriginal.checked = true;
-}
+};
 
 function onUploadFormlEscDown (evt){
   if (isEscapeKey(evt)) {

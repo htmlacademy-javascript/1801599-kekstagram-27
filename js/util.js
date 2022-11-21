@@ -1,6 +1,6 @@
-const isCommentLengthValid = (comment,maxLength) => comment.length < maxLength;
-
 const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const isCommentLengthValid = (comment,maxLength) => comment.length < maxLength;
 
 const debounce = (callback, timeoutDelay) => {
   let timeoutId;
@@ -12,4 +12,4 @@ const debounce = (callback, timeoutDelay) => {
 };
 
 
-export {isCommentLengthValid, isEscapeKey, debounce};
+export {isEscapeKey, isCommentLengthValid, debounce};
