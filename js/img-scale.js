@@ -1,16 +1,15 @@
-
-const scaleControlSmaller = document.querySelector('.scale__control--smaller');
-const scaleControlBigger = document.querySelector('.scale__control--bigger');
-scaleControlBigger.disabled = true;
-const scaleControlValue = document.querySelector('.scale__control--value');
-const uploadPhoto = document.querySelector('.img-upload__preview');
-
 const SCALE_STEP = 25;
 const SCALE_MIN = 25;
 const SCALE_MAX = 100;
 const TRANSFORM_STEP = 0.25;
 let TRANSFORM_START_VALUE = 1;
 let SCALE_START_VALUE = 100;
+
+const scaleControlSmaller = document.querySelector('.scale__control--smaller');
+const scaleControlBigger = document.querySelector('.scale__control--bigger');
+scaleControlBigger.disabled = true;
+const scaleControlValue = document.querySelector('.scale__control--value');
+const uploadPhoto = document.querySelector('.img-upload__preview');
 
 scaleControlValue.value = `${SCALE_START_VALUE}%`;
 
